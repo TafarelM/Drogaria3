@@ -41,7 +41,7 @@ public class EstadoDAOTest {
 		if (estado != null) {
 			System.out.println(estado);
 		} else {
-
+			System.out.println("Nenhum registro encontrado.");
 		}
 
 	}
