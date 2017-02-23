@@ -21,7 +21,7 @@ public class Cliente extends GenericDomain {
 	private Boolean liberado;
 
 	@OneToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = false, unique=true)
 	private Pessoa pessoa;
 
 	public Date getDataCadastro() {

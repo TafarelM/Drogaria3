@@ -30,7 +30,7 @@
 		<property name="show_sql">true</property>
 
 		<!-- Cria as tabelas do banco de dados -->
-		<property name="hbm2ddl.auto">validate</property>
+		<property name="hbm2ddl.auto">update</property>
 		
 		<!-- mapeamento das entidades -->
 		<mapping class="com.tafarelmello.drogaria.domain.Cidade" />
@@ -38,6 +38,7 @@
 		<mapping class="com.tafarelmello.drogaria.domain.Estado" />
 		<mapping class="com.tafarelmello.drogaria.domain.Fabricante" />
 		<mapping class="com.tafarelmello.drogaria.domain.Funcionario" />
+		<mapping class="com.tafarelmello.drogaria.domain.ItemVenda" />
 		<mapping class="com.tafarelmello.drogaria.domain.Pessoa" />
 		<mapping class="com.tafarelmello.drogaria.domain.Produto" />
 		<mapping class="com.tafarelmello.drogaria.domain.Usuario" />
