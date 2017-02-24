@@ -50,6 +50,13 @@
 
 				<p:outputLabel value="Senha:" />
 				<p:password maxlength="8" size="10" />
+				
+				<p:outputLabel value="Tipo:" />
+				<p:selectOneRadio>
+					<f:selectItem itemLabel="Administrador" itemValue="A" />
+					<f:selectItem itemLabel="Gerente" itemValue="G" />
+					<f:selectItem itemLabel="Balconista" itemValue="B" />
+				</p:selectOneRadio>
 
 				<p:outputLabel value="Ativo:" />
 				<p:selectBooleanCheckbox />
