@@ -10,6 +10,7 @@
 	<title>Estado</title>
 </h:head>
 <body>
+<p:growl id="mensagem"/>
 
 	<h:form>
 		<p:panel header="Estados - Listagem">
@@ -45,7 +46,9 @@
 				<p:inputText size="2" maxlength="2" />
 			</p:panelGrid>
 			<p:panelGrid columns="2">
-				<p:commandButton value="Salvar" actionListener="#{estadoController.salvar()}" />
+				<p:commandButton value="Salvar" actionListener="#{estadoController.salvar()}"
+					update=":mensagem" />
+					
 				<p:commandButton value="Cancelar" oncomplete="PF('dlEstado').hide();" />
 			</p:panelGrid>
 		</h:form>
