@@ -26,6 +26,10 @@ public class EstadoController implements Serializable {
 		listar();
 	}
 
+	public void novo() {
+		estado = new Estado();
+	}
+
 	public void salvar() {
 
 		try {
@@ -76,10 +80,6 @@ public class EstadoController implements Serializable {
 
 		estado = (Estado) evento.getComponent().getAttributes().get("estadoSelecionado");
 
-	}
-
-	public void novo() {
-		estado = new Estado();
 	}
 
 	public Estado getEstado() {

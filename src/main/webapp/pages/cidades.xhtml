@@ -20,7 +20,11 @@
 				<f:facet name="header">
 					<p:commandButton value="Novo" oncomplete="PF('dlCidade').show();"
 						actionListener="#{cidadeController.novo}"
-						update=":mensagem :frmCadastro:painel" />
+						update=":mensagem :frmCadastro:painel">
+
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
 				</f:facet>
 
 				<p:column headerText="Nome" filterBy="#{cidade.nome}"
@@ -49,9 +53,12 @@
 
 					<p:commandButton icon="ui-icon-pencil"
 						actionListener="#{cidadeController.editar}"
-						update=":mensagem :frmCadastro:painel" oncomplete="PF('dlCidade').show();">
+						update=":mensagem :frmCadastro:painel"
+						oncomplete="PF('dlCidade').show();">
 
 						<f:attribute name="cidadeSelecionado" value="#{cidade}" />
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>
@@ -71,14 +78,16 @@
 
 		<h:form id="frmCadastro">
 			<p:panelGrid id="painel" columns="2">
-				<p:outputLabel value="Nome:" />
-				<p:inputText size="30" maxlength="50"
-					value="#{cidadeController.cidade.nome}" />
+				<p:outputLabel for="itNome" value="Nome:" />
+				<p:inputText id="itNome" size="30" maxlength="50"
+					value="#{cidadeController.cidade.nome}" required="true"
+					requiredMessage="Campo nome é obrigatório" />
 
-				<p:outputLabel value="Estado:" />
-				<p:selectOneMenu filter="true"
+				<p:outputLabel for="somEstado" value="Estado:" />
+				<p:selectOneMenu id="somEstado" filter="true"
 					value="#{cidadeController.cidade.estado}"
-					converter="omnifaces.SelectItemsConverter">
+					converter="omnifaces.SelectItemsConverter" required="true"
+					requiredMessage="Campo estado é obrigatório.">
 					<f:selectItem noSelectionOption="true"
 						itemLabel="Selecione um Estado" />
 					<f:selectItems value="#{cidadeController.estados}" var="estado"

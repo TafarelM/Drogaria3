@@ -10,25 +10,38 @@
 </h:head>
 <h:body>
 
-	<h:form>
+	<p:growl id="mensagem" />
+
+	<h:form id="frmListagem">
 		<p:panel header="Clientes - Listagem">
-			<p:dataTable emptyMessage="Nenhum registro encontrado."
-				paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+				paginator="true" value="#{clienteController.clientes}" var="cliente"
+				rows="8">
 
 				<f:facet name="header">
-					<p:commandButton value="Novo" oncomplete="PF('dlCliente').show();" />
+					<p:commandButton value="Novo" oncomplete="PF('dlCliente').show();"
+						actionListener="#{cidadeController.novo}"
+						update=":mensagem :frmCadastro:painel">
+
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
 				</f:facet>
 
 				<p:column headerText="Nome">
+					<h:outputText value="#{cliente.nome}" />
 				</p:column>
 
 				<p:column headerText="CPF">
+					<h:outputText value="#{cliente.cpf}" />
 				</p:column>
 
 				<p:column headerText="Data de Cadastro">
+					<h:outputText value="#{cliente.dataCadastro}" />
 				</p:column>
 
 				<p:column headerText="Liberado">
+					<h:outputText value="#{cliente.liberado}" />
 				</p:column>
 
 				<p:column headerText="Opções">
@@ -46,13 +59,13 @@
 				<p:outputLabel value="Pessoa:" />
 				<p:selectOneMenu filter="true">
 					<f:selectItem itemValue="" itemLabel="Selecione uma Pessoa" />
-				</p:selectOneMenu>			
+				</p:selectOneMenu>
 
 				<p:outputLabel value="Data de Cadastro:" />
-				<p:calendar/>
+				<p:calendar />
 
 				<p:outputLabel value="Ativo:" />
-				<p:selectBooleanCheckbox/>
+				<p:selectBooleanCheckbox />
 			</p:panelGrid>
 			<p:panelGrid columns="2">
 				<p:commandButton value="Salvar" />
@@ -60,6 +73,37 @@
 					oncomplete="PF('dlCliente').hide();" />
 			</p:panelGrid>
 		</h:form>
+
+		<p:dialog header="Cidades - Cadastro" widgetVar="dlCidade"
+			draggable="false" resizable="false" modal="true">
+
+			<h:form id="frmCadastro">
+				<p:panelGrid id="painel" columns="2">
+					<p:outputLabel for="itNome" value="Nome:" />
+					<p:inputText id="itNome" size="30" maxlength="50"
+						value="#{cidadeController.cidade.nome}" required="true"
+						requiredMessage="Campo nome é obrigatório" />
+
+					<p:outputLabel for="somEstado" value="Estado:" />
+					<p:selectOneMenu id="somEstado" filter="true"
+						value="#{cidadeController.cidade.estado}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						requiredMessage="Campo estado é obrigatório.">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um Estado" />
+						<f:selectItems value="#{cidadeController.estados}" var="estado"
+							itemValue="#{estado}" itemLabel="#{estado.nome}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{cidadeController.salvar}"
+						update=":mensagem :frmCadastro:painel :frmListagem:tabela" />
+					<p:commandButton value="Cancelar"
+						oncomplete="PF('dlCidade').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</p:dialog>
 
 </h:body>

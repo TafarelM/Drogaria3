@@ -25,7 +25,7 @@ public class CidadeController implements Serializable {
 	private List<Estado> estados;
 
 	@PostConstruct
-	public void inicar() {
+	public void iniciar() {
 		listar();
 	}
 
