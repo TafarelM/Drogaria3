@@ -142,11 +142,4 @@ public class Pessoa extends GenericDomain {
 		this.cidade = cidade;
 	}
 
-	@Override
-	public String toString() {
-		return "Pessoa [nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", rua=" + rua + ", numero=" + numero
-				+ ", bairro=" + bairro + ", cep=" + cep + ", complemento=" + complemento + ", telefone=" + telefone
-				+ ", celular=" + celular + ", email=" + email + ", cidade=" + cidade + "]";
-	}
-
 }

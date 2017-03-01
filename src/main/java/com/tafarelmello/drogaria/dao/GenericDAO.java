@@ -62,7 +62,7 @@ public class GenericDAO<Entidade> {
 		try {
 			Criteria consulta = session.createCriteria(classe);
 			consulta.add(Restrictions.idEq(codigo));
-			Entidade resultado = (Entidade)consulta.uniqueResult();
+			Entidade resultado = (Entidade) consulta.uniqueResult();
 			return resultado;
 		} catch (RuntimeException erro) {
 			throw erro;
@@ -70,7 +70,7 @@ public class GenericDAO<Entidade> {
 			session.close();
 		}
 	}
-	
+
 	public void excluir(Entidade entidade) {
 		Session session = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transaction = null;
@@ -90,7 +90,7 @@ public class GenericDAO<Entidade> {
 			session.close();
 		}
 	}
-	
+
 	public void editar(Entidade entidade) {
 		Session session = HibernateUtil.getFabricaDeSessoes().openSession();
 		Transaction transaction = null;
@@ -110,5 +110,23 @@ public class GenericDAO<Entidade> {
 			session.close();
 		}
 	}
-	
+
+	public void merge(Entidade entidade) {
+		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+		Transaction transacao = null;
+
+		try {
+			transacao = sessao.beginTransaction();
+			sessao.merge(entidade);
+			transacao.commit();
+		} catch (RuntimeException erro) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	}
+
 }
