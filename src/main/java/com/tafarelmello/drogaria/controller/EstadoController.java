@@ -58,6 +58,18 @@ public class EstadoController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	public void listarOrdenada() {
+
+		try {
+			EstadoDAO estadoDAO = new EstadoDAO();
+
+			estados = estadoDAO.listar("nome");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar Listar os Estados.");
+			erro.printStackTrace();
+		}
+	}
 
 	public void excluir(ActionEvent evento) {
 

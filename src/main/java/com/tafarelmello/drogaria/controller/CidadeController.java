@@ -65,6 +65,16 @@ public class CidadeController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	public void ListaOdenada() {
+		try {
+			CidadeDAO cidadeDAO = new CidadeDAO();
+			cidades = cidadeDAO.listar("nome");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar listar Cidades.");
+			erro.printStackTrace();
+		}
+	}
 
 	public void excluir(ActionEvent evento) {
 		try {
@@ -92,7 +102,7 @@ public class CidadeController implements Serializable {
 			Messages.addGlobalError("Erro ao tentar selecionar uma nova cidade.");
 			erro.printStackTrace();
 		}
-	}
+	}	
 
 	public Cidade getCidade() {
 		return cidade;

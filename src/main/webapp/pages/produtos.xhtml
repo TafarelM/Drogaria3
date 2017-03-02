@@ -17,7 +17,8 @@
 				paginator="true" value="#{produtoController.produtos}" var="produto"
 				rows="5">
 				<f:facet name="header">
-					<p:commandButton value="Novo" actionListener="#{produtoController.novo}"
+					<p:commandButton value="Novo"
+						actionListener="#{produtoController.novo}"
 						oncomplete="PF('dialogo').show();"
 						update=":mensagem :frmCadastro:painel">
 						<f:actionListener
@@ -34,7 +35,9 @@
 				</p:column>
 
 				<p:column headerText="Preço">
-					<h:outputText value="#{produto.preco}" />
+					<h:outputText value="#{produto.preco}">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					</h:outputText>
 				</p:column>
 
 				<p:column headerText="Fabricante">
@@ -83,21 +86,32 @@
 				<p:inputText maxlength="5" size="10"
 					value="#{produtoController.produto.quantidade}" required="true"
 					requiredMessage="O campo 'Quantidade' é obrigatório"
-					converterMessage="Informe um valor válido para o campo 'Quantidade'" />
+					converterMessage="Informe um valor válido para o campo Quantidade"
+					validatorMessage="Informe um valor entre 0 a 100 para o campo quantidade.">
+
+					<f:validateLongRange minimum="0" maximum="1000" />
+				</p:inputText>
 
 				<p:outputLabel value="Preço:" />
 				<p:inputText maxlength="7" size="10"
 					value="#{produtoController.produto.preco}" required="true"
-					requiredMessage="O campo 'Preço' é obrigatório"
-					converterMessage="Informe um valor válido para o campo 'Preço''" />
+					requiredMessage="O campo Preço é obrigatório"
+					converterMessage="Informe um valor válido para o campo Preço"
+					validatorMessage="Informe um valor entre 0.01 a 999.99 para o campo preço.">
+
+					<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					<f:validateDoubleRange minimum="0.01" maximum="9999.99" />
+				</p:inputText>
 
 				<p:outputLabel value="Fabricante:" />
 				<p:selectOneMenu filter="true"
 					value="#{produtoController.produto.fabricante}"
 					converter="omnifaces.SelectItemsConverter" required="true"
 					requiredMessage="O campo 'Fabricante' é obrigatório">
+					
 					<f:selectItem noSelectionOption="true"
 						itemLabel="Selecione um fabricante" />
+						
 					<f:selectItems value="#{produtoController.fabricantes}"
 						var="fabricante" itemValue="#{fabricante}"
 						itemLabel="#{fabricante.descricao}" />

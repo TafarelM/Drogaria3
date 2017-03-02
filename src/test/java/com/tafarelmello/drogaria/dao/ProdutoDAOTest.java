@@ -25,7 +25,7 @@ public class ProdutoDAOTest {
 			produto.setDescricao("remedio pra dor");
 			produto.setFabricante(fabricante);
 			produto.setPreco(new BigDecimal("20.20"));
-			produto.setQuatidade(new Short("3"));
+			produto.setQuantidade(new Short("3"));
 
 			produtoDAO.salvar(produto);
 
@@ -98,7 +98,7 @@ public class ProdutoDAOTest {
 				produto.setDescricao("sdsdsdd");
 				produto.setFabricante(fabricante);
 				produto.setPreco(new BigDecimal("45.20"));
-				produto.setQuatidade(new Short("2"));
+				produto.setQuantidade(new Short("2"));
 
 				produtoDAO.editar(produto);
 

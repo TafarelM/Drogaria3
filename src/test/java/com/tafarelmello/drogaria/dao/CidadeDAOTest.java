@@ -78,19 +78,19 @@ public class CidadeDAOTest {
 		CidadeDAO cidadeDAO = new CidadeDAO();
 
 		cidade = cidadeDAO.buscar(5L);
-		
+
 		System.out.println("cidade a ser editada = " + cidade);
-		
+
 		if (cidade != null) {
 
 			cidade.setNome("aaaa");
-			estado = estadoDAO.buscar(3L);			
-			
+			estado = estadoDAO.buscar(3L);
+
 			if (estado != null) {
 				cidade.setEstado(estado);
-				
+
 				cidadeDAO.editar(cidade);
-				
+
 				System.out.println("APOS EDIÇÃO = " + cidade);
 			} else {
 				System.out.println("Nenhum registro encontrado.");
@@ -100,5 +100,22 @@ public class CidadeDAOTest {
 			System.out.println("Nenhum registro encontrado.");
 		}
 
+	}
+
+	@Test
+	public void buscarPorEstado() {
+		Long estadoCodigo = 1L;
+		
+		CidadeDAO cidadeDAO = new CidadeDAO();
+		List<Cidade> resultado = cidadeDAO.buscarPorEstado(estadoCodigo);
+
+		for (Cidade cidade : resultado) {
+			System.out.println("Código da Cidade: " + cidade.getCodigo());
+			System.out.println("Nome da Cidade: " + cidade.getNome());
+			System.out.println("Código do Estado: " + cidade.getEstado().getCodigo());
+			System.out.println("Sigla do Estado: " + cidade.getEstado().getSigla());
+			System.out.println("Nome do Estado: " + cidade.getEstado().getNome());
+			System.out.println();
+		}
 	}
 }

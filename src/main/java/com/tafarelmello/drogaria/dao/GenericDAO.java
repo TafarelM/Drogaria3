@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.tafarelmello.drogaria.util.HibernateUtil;
@@ -126,6 +127,22 @@ public class GenericDAO<Entidade> {
 			throw erro;
 		} finally {
 			sessao.close();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Entidade> listar(String campoOrdenacao) {
+		Session session = HibernateUtil.getFabricaDeSessoes().openSession();
+
+		try {
+			Criteria consulta = session.createCriteria(classe);
+			consulta.addOrder(Order.asc(campoOrdenacao));
+			List<Entidade> resultado = consulta.list();
+			return resultado;
+		} catch (RuntimeException erro) {
+			throw erro;
+		} finally {
+			session.close();
 		}
 	}
 

@@ -45,9 +45,9 @@ public class ClienteController implements Serializable {
 	public void listar() {
 		try {
 			ClienteDAO clienteDAO = new ClienteDAO();
-			clientes = clienteDAO.listar();
+			clientes = clienteDAO.listar("dataCadastro");
 		} catch (RuntimeException erro) {
-			Messages.addGlobalError("Erro ao tentar listar Cidades.");
+			Messages.addGlobalError("Erro ao tentar listar Clientes.");
 			erro.printStackTrace();
 		}
 	}
