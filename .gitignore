@@ -3,6 +3,13 @@
 
 ### Eclipse ###
 
+*.settings
+*target
+*.classpath
+*.project
+*.tern-project
+
+
 .metadata
 bin/
 tmp/
