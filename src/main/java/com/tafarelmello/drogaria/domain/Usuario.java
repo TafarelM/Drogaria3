@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -21,6 +22,33 @@ public class Usuario extends GenericDomain {
 	@OneToOne
 	@JoinColumn(nullable = false, unique = true)
 	private Pessoa pessoa;
+	
+	@Transient
+	public String getTipoFormatado(){
+		String tipoFormatado = null;
+		
+		if(tipo == 'A'){
+			tipoFormatado = "Administrador";
+		}else if(tipo == 'B'){
+			tipoFormatado = "Balconista";
+		}else if(tipo == 'G'){
+			tipoFormatado = "Gerente";
+		}
+		
+		return tipoFormatado;
+	}
+	
+	@Transient
+	public String getAtivoFormatado(){
+		String ativoFormatado = null;
+		if(ativo){
+			ativoFormatado = "Sim";
+		}else{
+			ativoFormatado = "Não";
+		}
+		
+		return ativoFormatado;
+	}
 
 	public String getSenha() {
 		return senha;

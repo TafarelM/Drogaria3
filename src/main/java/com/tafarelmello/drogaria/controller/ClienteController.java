@@ -6,10 +6,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
 import com.tafarelmello.drogaria.dao.ClienteDAO;
+import com.tafarelmello.drogaria.dao.PessoaDAO;
 import com.tafarelmello.drogaria.domain.Cliente;
 import com.tafarelmello.drogaria.domain.Pessoa;
 
@@ -30,8 +32,8 @@ public class ClienteController implements Serializable {
 		try {
 			cliente = new Cliente();
 
-			ClienteDAO clienteDAO = new ClienteDAO();
-			clientes = clienteDAO.listar();
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			pessoas = pessoaDAO.listar("nome");
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Erro ao tentar gerar um cliente.");
 			erro.printStackTrace();
@@ -39,7 +41,21 @@ public class ClienteController implements Serializable {
 	}
 
 	public void salvar() {
+		try {
+			ClienteDAO clienteDAO = new ClienteDAO();
+			clienteDAO.merge(cliente);
 
+			novo();
+			listar();
+
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			pessoas = pessoaDAO.listar("nome");
+
+			Messages.addGlobalInfo("Cliente Salvo com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar Salvar o cliente.");
+			erro.printStackTrace();
+		}
 	}
 
 	public void listar() {
@@ -52,12 +68,35 @@ public class ClienteController implements Serializable {
 		}
 	}
 
-	public void excluir() {
+	public void excluir(ActionEvent evento) {
+
+		try {
+			cliente = (Cliente) evento.getComponent().getAttributes().get("clienteSelecionado");
+
+			ClienteDAO clienteDAO = new ClienteDAO();
+			clienteDAO.excluir(cliente);
+
+			listar();
+
+			Messages.addGlobalInfo("Cliente Exluido com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar Salvar o cliente.");
+			erro.printStackTrace();
+		}
 
 	}
 
-	public void editar() {
+	public void editar(ActionEvent evento) {
 
+		try {
+			cliente = (Cliente) evento.getComponent().getAttributes().get("clienteSelecionado");
+
+			PessoaDAO pessoaDAO = new PessoaDAO();
+			pessoas = pessoaDAO.listar("nome");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Erro ao tentar Salvar o cliente.");
+			erro.printStackTrace();
+		}
 	}
 
 	public Cliente getCliente() {

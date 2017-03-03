@@ -10,40 +10,77 @@
 </h:head>
 <h:body>
 
-	<h:form>
+	<p:growl id="mensagem" />
+
+	<h:form id="frmListagem">
 		<p:panel header="Fabricante - Listagem">
-			<p:dataTable emptyMessage="Nenhum registro encontrado."
-				paginator="true">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+				paginator="true" rows="5"
+				value="#{fabricanteController.fabricantes}" var="fabricante">
 
 				<f:facet name="header">
-					<p:commandButton value="Novo" oncomplete="PF('dlFabricante').show();" />
+					<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						actionListener="#{fabricanteController.novo}"
+						update=":mensagem :frmCadastro:painel">
+
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
 				</f:facet>
 
 				<p:column headerText="Descrição">
+					<h:outputText value="#{fabricante.descricao}" />
 				</p:column>
 
 				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{fabricanteController.excluir}"
+						update=":mensagem :frmListagem:tabela">
+						<p:confirm header="Confirmação"
+							message="Deseja excluir a Fabricante?" icon="ui-icon-alert" />
+
+						<f:attribute name="fabricanteSelecionado" value="#{fabricante}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{fabricanteController.editar}"
+						update=":mensagem :frmCadastro:painel"
+						oncomplete="PF('dialogo').show();">
+
+						<f:attribute name="fabricanteSelecionado" value="#{fabricante}" />
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
 				</p:column>
 
 			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</p:panel>
 	</h:form>
 
-	<p:dialog header="Fabricantes - Cadastro" widgetVar="dlFabricante"
+	<p:dialog header="Fabricantes - Cadastro" widgetVar="dialogo"
 		draggable="false" resizable="false" modal="true">
 
-		<h:form>
-			<p:panelGrid columns="2">
+		<h:form id="frmCadastro">
+			<p:panelGrid id="painel" columns="2">
 				<p:outputLabel value="Descrição:" />
-				<p:inputText size="30" maxlength="50" />
+				<p:inputText size="30" maxlength="50"
+					value="#{fabricanteController.fabricante.descricao}" />
 			</p:panelGrid>
 			<p:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
-				<p:commandButton value="Cancelar"
-					oncomplete="PF('dlEstado').hide();" />
+				<p:commandButton value="Salvar"
+					actionListener="#{fabricanteController.salvar()}"
+					update=":mensagem :frmCadastro:painel :frmListagem:tabela" />
+				<p:commandButton value="Cancelar" oncomplete="PF('dialogo').hide();" />
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
-
 </h:body>
 </html>
