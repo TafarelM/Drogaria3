@@ -48,8 +48,8 @@ public class FabricanteController implements Serializable {
 			WebTarget caminho = client.target("http://localhost:8080/Drogaria/rest/fabricante");
 
 			Gson gson = new Gson();
+			
 			String json = gson.toJson(fabricante);
-
 			caminho.request().post(Entity.json(json));
 
 			novo();

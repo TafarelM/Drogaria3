@@ -4,6 +4,7 @@
 ### Eclipse ###
 
 *.settings
+*.settings/
 *target
 *.classpath
 *.project
