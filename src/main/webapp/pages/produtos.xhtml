@@ -74,16 +74,16 @@
 	</h:form>
 
 	<p:dialog header="Produtos - Cadastro" widgetVar="dialogo"
-		draggable="false" resizable="false" modal="true" closable="false">
-		<h:form id="frmCadastro">
+		draggable="true" resizable="false" modal="true" closable="false">
+		<h:form id="frmCadastro" enctype="multipart/form-data">
 			<h:panelGrid id="painel" columns="2">
-				<p:outputLabel value="Descrição:" />
-				<p:inputText maxlength="50" size="30"
+				<p:outputLabel for="descricao" value="Descrição:" />
+				<p:inputText id="descricao" maxlength="50" size="30"
 					value="#{produtoController.produto.descricao}" required="true"
 					requiredMessage="O campo 'Descrição' é obrigatório" />
 
-				<p:outputLabel value="Quantidade:" />
-				<p:inputText maxlength="5" size="10"
+				<p:outputLabel for="quantidade" value="Quantidade:" />
+				<p:inputText id="quantidade" maxlength="5" size="10"
 					value="#{produtoController.produto.quantidade}" required="true"
 					requiredMessage="O campo 'Quantidade' é obrigatório"
 					converterMessage="Informe um valor válido para o campo Quantidade"
@@ -92,8 +92,8 @@
 					<f:validateLongRange minimum="0" maximum="1000" />
 				</p:inputText>
 
-				<p:outputLabel value="Preço:" />
-				<p:inputText maxlength="7" size="10"
+				<p:outputLabel for="preco" value="Preço:" />
+				<p:inputText id="preco" maxlength="7" size="10"
 					value="#{produtoController.produto.preco}" required="true"
 					requiredMessage="O campo Preço é obrigatório"
 					converterMessage="Informe um valor válido para o campo Preço"
@@ -103,8 +103,8 @@
 					<f:validateDoubleRange minimum="0.01" maximum="9999.99" />
 				</p:inputText>
 
-				<p:outputLabel value="Fabricante:" />
-				<p:selectOneMenu filter="true"
+				<p:outputLabel for="fabricante" value="Fabricante:" />
+				<p:selectOneMenu id="fabricante" filter="true"
 					value="#{produtoController.produto.fabricante}"
 					converter="omnifaces.SelectItemsConverter" required="true"
 					requiredMessage="O campo 'Fabricante' é obrigatório">
@@ -116,6 +116,15 @@
 						var="fabricante" itemValue="#{fabricante}"
 						itemLabel="#{fabricante.descricao}" />
 				</p:selectOneMenu>
+				
+				<p:outputLabel for="upload" value="Upload:" />
+				<p:fileUpload id="upload" mode="advanced" fileUploadListener="#{produtoController.upload}" 
+				auto="false" update=":mensagem :frmCadastro:foto" />
+				
+				<p:outputLabel for="foto" value="Foto:" />
+				<p:graphicImage id="foto" value="#{imagemController.foto}" width="200" height="200">
+					<f:param name="caminho" value="#{produtoController.produto.caminho}"/>
+				</p:graphicImage>
 
 			</h:panelGrid>
 
