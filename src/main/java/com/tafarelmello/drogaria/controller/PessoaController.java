@@ -100,13 +100,12 @@ public class PessoaController implements Serializable {
 
 		try {
 			pessoa = (Pessoa) evento.getComponent().getAttributes().get("pessoaSelecionada");			
-			estado = pessoa.getCidade().getEstado();
-			
-			CidadeDAO cidadeDAO = new CidadeDAO();
-			cidades = cidadeDAO.listar();
+			estado = pessoa.getCidade().getEstado();			
 			
 			EstadoDAO estadoDAO = new EstadoDAO();
 			estados = estadoDAO.listar();
+			
+			popular();
 			
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu ao tentar editar.");
