@@ -10,61 +10,46 @@
 </h:head>
 <h:body>
 
+	<p:growl id="mensagem" />
+
 	<h:form>
-		<p:panel header="Estados - Listagem">
-			<p:dataTable emptyMessage="Nenhum registro encontrado."
-				paginator="true">
+		<p:panel header="Produtos">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+				paginator="true" value="#{vendaController.produtos}" var="produto"
+				rows="3">
 
-				<f:facet name="header">
-					<p:commandButton value="Novo" oncomplete="PF('dlEstado').show();" />
-				</f:facet>
-
-				<p:column headerText="Horario">
+				<p:column headerText="Descrição" filterBy="#{produto.descricao}"
+					sortBy="#{produto.descricao}">
+					<h:outputText value="#{produto.descricao}" />
 				</p:column>
 
-				<p:column headerText="Preço Total">
+				<p:column headerText="Quantidade" sortBy="#{produto.quantidade}">
+					<h:outputText value="#{produto.quantidade}" />
 				</p:column>
-				
-				<p:column headerText="Cliente">
+
+				<p:column headerText="Preço" sortBy="#{produto.preco}">
+					<h:outputText value="#{produto.preco}">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					</h:outputText>
 				</p:column>
-				
-				<p:column headerText="Funcionario">
+
+				<p:column headerText="Fabricante"
+					filterBy="#{produto.fabricante.descricao}"
+					sortBy="#{produto.fabricante.descricao}">
+					<h:outputText value="#{produto.fabricante.descricao}" />
 				</p:column>
 
 				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-plus" />
 				</p:column>
-
 			</p:dataTable>
 		</p:panel>
+
+		<p:panel header="Cesta de Compras">
+		</p:panel>
+
+		<p:panel header="Total">
+		</p:panel>
 	</h:form>
-
-	<p:dialog header="Estados - Cadastro" widgetVar="dlEstado"
-		draggable="false" resizable="false" modal="true">
-
-		<h:form>
-			<p:panelGrid columns="2">
-				<p:outputLabel value="Horario:" />
-				<p:inputText size="30" maxlength="50" />
-
-				<p:outputLabel value="Preço:" />
-				<p:inputText size="20" maxlength="7" />
-				
-				<p:outputLabel value="Cliente:" />
-				<p:selectOneMenu filter="true">
-					<f:selectItem itemValue="" itemLabel="Selecione um Cliente"/>
-				</p:selectOneMenu>
-				
-				<p:outputLabel value="Funcionario:" />
-				<p:selectOneMenu filter="true">
-					<f:selectItem itemValue="" itemLabel="Selecione um Funcionario"/>	
-				</p:selectOneMenu>
-			</p:panelGrid>
-			<p:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
-				<p:commandButton value="Cancelar"
-					oncomplete="PF('dlEstado').hide();" />
-			</p:panelGrid>
-		</h:form>
-	</p:dialog>
 </h:body>
 </html>
