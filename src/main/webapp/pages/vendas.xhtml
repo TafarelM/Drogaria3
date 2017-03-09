@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title></title>
+	<title>Vendas</title>
 </h:head>
 <h:body>
-
 	<p:growl id="mensagem" />
 
-	<h:form id="frm">
+	<h:form id="formulario">
 		<p:panel header="Produtos">
-			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
-				paginator="true" value="#{vendaController.produtos}" var="produto"
-				rows="3">
+			<p:dataTable id="tabelaProduto"
+				emptyMessage="Nenhum registro encontrado." paginator="true"
+				value="#{vendaController.produtos}" var="produto" rows="5">
 
 				<p:column headerText="Descrição" filterBy="#{produto.descricao}"
 					sortBy="#{produto.descricao}">
@@ -40,9 +39,11 @@
 				</p:column>
 
 				<p:column headerText="Opções">
-					<p:commandButton icon="ui-icon-plus" actionListener="#{vendaController.adicionar}" update=":frm:tabelaCesta">
+					<p:commandButton icon="ui-icon-plus"
+						actionListener="#{vendaController.adicionar}"
+						update=":formulario:tabelaCesta :formulario:painelFinalizacao">
 						<f:attribute name="produtoSelecionado" value="#{produto}" />
-					</p:commandButton>	
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 		</p:panel>
@@ -50,13 +51,13 @@
 		<p:panel header="Cesta de Compras">
 			<p:dataTable id="tabelaCesta"
 				emptyMessage="Nenhum registro encontrado." paginator="true"
-				value="#{vendaController.itensVenda}" var="itemVenda" rows="3">
+				value="#{vendaController.itensVenda}" var="itemVenda" rows="5">
 
 				<p:column headerText="Descrição">
 					<h:outputText value="#{itemVenda.produto.descricao}" />
 				</p:column>
 
-				<p:column headerText="Preço un.">
+				<p:column headerText="Preço Un.">
 					<h:outputText value="#{itemVenda.produto.preco}">
 						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
 					</h:outputText>
@@ -73,15 +74,49 @@
 				</p:column>
 
 				<p:column headerText="Opções">
-					<p:commandButton icon="ui-icon-minus">
-						
-					</p:commandButton>					
+					<p:commandButton icon="ui-icon-minus"
+						actionListener="#{vendaController.remover}"
+						update=":formulario:tabelaCesta :formulario:painelFinalizacao">
+						<f:attribute name="itemSelecionado" value="#{itemVenda}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 		</p:panel>
 
-		<p:panel header="Total">
+		<p:panel header="Finalização">
+			<h:panelGrid id="painelFinalizacao" columns="3">
+				<p:outputLabel value="Total: R$" />
+				<h:outputText value="#{vendaController.venda.precoTotal}">
+					<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+				</h:outputText>
+				<p:commandButton value="Finalizar"
+					actionListener="#{vendaController.finalizarCompra}"
+					update=":mensagem :formularioFinalizar:painelFinalizar"
+					oncomplete="PF('dialogo').show();" />
+			</h:panelGrid>
 		</p:panel>
 	</h:form>
+
+	<p:dialog header="Finalizar Venda" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="false">
+		<h:form id="formularioFinalizar">
+			<h:panelGrid id="painelFinalizar" columns="2">
+				<p:outputLabel value="Funcionário:" />
+				<p:selectOneMenu value="#{vendaController.venda.funcionario}"
+					converter="omnifaces.SelectItemsConverter" filter="true">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione um funcionário" />
+					<f:selectItems value="#{vendaController.funcionarios}" var="funcionario"
+						itemValue="#{funcionario}" itemLabel="#{funcionario.pessoa.nome}" />
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+				<p:commandButton value="Salvar" />
+				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>
