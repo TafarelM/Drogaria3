@@ -3,6 +3,7 @@ package com.tafarelmello.drogaria.controller;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
+import com.tafarelmello.drogaria.dao.ClienteDAO;
 import com.tafarelmello.drogaria.dao.FuncionarioDAO;
 import com.tafarelmello.drogaria.dao.ProdutoDAO;
 import com.tafarelmello.drogaria.domain.Cliente;
@@ -109,8 +111,13 @@ public class VendaController implements Serializable {
 
 	public void finalizarCompra() {
 		try {
+			venda.setHorario(new Date());
+			
 			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-			funcionarios = funcionarioDAO.listar("");			
+			funcionarios = funcionarioDAO.listarOrdenado();	
+			
+			ClienteDAO clienteDAO = new ClienteDAO();
+			clientes = clienteDAO.listarOrdenado();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorre um erro ao tentar finalizar a venda.");
 		}
