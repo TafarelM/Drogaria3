@@ -36,12 +36,22 @@ public class VendaController implements Serializable {
 
 	@PostConstruct
 	public void iniciar() {
-		listar();
+		novo();
+	}
+	
+	public void novo(){
+		try {		
 
-		itensVenda = new ArrayList<>();
+			itensVenda = new ArrayList<>();
 
-		venda = new Venda();
-		venda.setPrecoTotal(new BigDecimal(0.00));
+			venda = new Venda();
+			venda.setPrecoTotal(new BigDecimal(0.00));
+			
+			listar();
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("erro");
+			erro.printStackTrace();
+		}
 	}
 
 	public void listar() {
@@ -113,6 +123,7 @@ public class VendaController implements Serializable {
 	public void finalizarCompra() {
 		try {
 			venda.setHorario(new Date());
+			venda.setCliente(null);//para limpar o funcionario
 
 			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 			funcionarios = funcionarioDAO.listarOrdenado();
@@ -134,6 +145,8 @@ public class VendaController implements Serializable {
 			
 			VendaDAO vendaDAO = new VendaDAO();
 			vendaDAO.salvar(venda, itensVenda);
+			
+			novo();
 			
 			Messages.addGlobalInfo("Venda realizada com sucesso.");
 		} catch (RuntimeException erro) {
