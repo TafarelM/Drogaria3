@@ -16,6 +16,7 @@ import org.omnifaces.util.Messages;
 import com.tafarelmello.drogaria.dao.ClienteDAO;
 import com.tafarelmello.drogaria.dao.FuncionarioDAO;
 import com.tafarelmello.drogaria.dao.ProdutoDAO;
+import com.tafarelmello.drogaria.dao.VendaDAO;
 import com.tafarelmello.drogaria.domain.Cliente;
 import com.tafarelmello.drogaria.domain.Funcionario;
 import com.tafarelmello.drogaria.domain.ItemVenda;
@@ -112,14 +113,32 @@ public class VendaController implements Serializable {
 	public void finalizarCompra() {
 		try {
 			venda.setHorario(new Date());
-			
+
 			FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-			funcionarios = funcionarioDAO.listarOrdenado();	
-			
+			funcionarios = funcionarioDAO.listarOrdenado();
+
 			ClienteDAO clienteDAO = new ClienteDAO();
 			clientes = clienteDAO.listarOrdenado();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorre um erro ao tentar finalizar a venda.");
+			erro.printStackTrace();
+		}
+	}
+
+	public void salvar() {
+		try {
+			if(venda.getPrecoTotal().signum() == 0){
+				Messages.addFlashGlobalError("Informe pelo menos um produto."); 
+				return;
+			}
+			
+			VendaDAO vendaDAO = new VendaDAO();
+			vendaDAO.salvar(venda, itensVenda);
+			
+			Messages.addGlobalInfo("Venda realizada com sucesso.");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorre um erro ao tentar salvar a venda.");
+			erro.printStackTrace();
 		}
 	}
 

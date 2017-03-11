@@ -15,7 +15,8 @@
 		<p:panel header="Produtos">
 			<p:dataTable id="tabelaProduto"
 				emptyMessage="Nenhum registro encontrado." paginator="true"
-				value="#{vendaController.produtos}" var="produto" rows="5">
+				value="#{vendaController.produtos}" var="produto" rows="5"
+				paginatorPosition="bottom">
 
 				<p:column headerText="Descrição" filterBy="#{produto.descricao}"
 					sortBy="#{produto.descricao}">
@@ -51,7 +52,8 @@
 		<p:panel header="Cesta de Compras">
 			<p:dataTable id="tabelaCesta"
 				emptyMessage="Nenhum registro encontrado." paginator="true"
-				value="#{vendaController.itensVenda}" var="itemVenda" rows="5">
+				value="#{vendaController.itensVenda}" var="itemVenda" rows="5"
+				paginatorPosition="bottom">
 
 				<p:column headerText="Descrição">
 					<h:outputText value="#{itemVenda.produto.descricao}" />
@@ -92,7 +94,11 @@
 				<p:commandButton value="Finalizar"
 					actionListener="#{vendaController.finalizarCompra}"
 					update=":mensagem :formularioFinalizar:painelFinalizar"
-					oncomplete="PF('dialogo').show();" />
+					oncomplete="PF('dialogo').show();">
+
+					<f:actionListener
+						type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+				</p:commandButton>
 			</h:panelGrid>
 		</p:panel>
 	</h:form>
@@ -103,16 +109,18 @@
 			<h:panelGrid id="painelFinalizar" columns="2">
 				<p:outputLabel value="Horário:" />
 				<h:outputText value="#{vendaController.venda.horario}">
-					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt_BR"
+						timeZone="America/Sao_Paulo" />
 				</h:outputText>
-			
+
 				<p:outputLabel value="Total R$:" />
 				<h:outputText value="#{vendaController.venda.precoTotal}">
 					<f:convertNumber locale="pt_BR" minFractionDigits="2" />
 				</h:outputText>
-				
-				<p:outputLabel value="Funcionário:" />
-				<p:selectOneMenu value="#{vendaController.venda.funcionario}"
+
+				<p:outputLabel for="funcionario" value="Funcionário:" />
+				<p:selectOneMenu id="funcionario"
+					value="#{vendaController.venda.funcionario}"
 					converter="omnifaces.SelectItemsConverter" filter="true">
 					<f:selectItem noSelectionOption="true"
 						itemLabel="Selecione um funcionário" />
@@ -135,7 +143,9 @@
 			</h:panelGrid>
 
 			<h:panelGrid columns="2">
-				<p:commandButton value="Salvar" />
+				<p:commandButton value="Salvar" actionListener="#{vendaController.salvar}"
+					update=":mensagem" oncomplete="PF('dialogo').hide();" />
+
 				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 			</h:panelGrid>
 		</h:form>
