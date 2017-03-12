@@ -1,89 +1,87 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo.xhtml">
 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Estado</title>
-</h:head>
-<body>
-	<p:growl id="mensagem" />
+	<ui:define name="conteudo">
 
-	<h:form id="frmListagem">
-		<p:panel header="Estados - Listagem">
-			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
-				paginator="true" value="#{estadoController.estados}" var="estado"
-				rows="8">
+		<h:form id="frmListagem">
+			<p:panel header="Estados - Listagem">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{estadoController.estados}" var="estado"
+					rows="8" paginatorPosition="bottom">
 
-				<f:facet name="header">
-					<p:commandButton value="Novo" oncomplete="PF('dlEstado').show();"
-						actionListener="#{estadoController.novo()}"
-						update=":frmCadastro:pgCadastro" />
-				</f:facet>
+					<f:facet name="header">
+						<p:commandButton value="Novo" oncomplete="PF('dlEstado').show();"
+							actionListener="#{estadoController.novo()}"
+							update=":frmCadastro:pgCadastro" />
+					</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{estado.nome}"
-					filterBy="#{estado.nome}">
-					<h:outputText value="#{estado.nome}" />
-				</p:column>
+					<p:column headerText="Nome" sortBy="#{estado.nome}"
+						filterBy="#{estado.nome}">
+						<h:outputText value="#{estado.nome}" />
+					</p:column>
 
-				<p:column headerText="Sigla" sortBy="#{estado.sigla}">
-					<h:outputText value="#{estado.sigla}" />
-				</p:column>
+					<p:column headerText="Sigla" sortBy="#{estado.sigla}">
+						<h:outputText value="#{estado.sigla}" />
+					</p:column>
 
-				<p:column headerText="Opções">
-					<p:commandButton icon="ui-icon-trash"
-						actionListener="#{estadoController.excluir}"
-						update=":mensagem :frmListagem:tabela">
-						<p:confirm header="Confirmação" message="Deseja excluir o estado?"
-							icon="ui-icon-alert" />
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{estadoController.excluir}"
+							update=":mensagem :frmListagem:tabela">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o estado?" icon="ui-icon-alert" />
 
-						<f:attribute name="estadoSelecionado" value="#{estado}" />
-					</p:commandButton>
+							<f:attribute name="estadoSelecionado" value="#{estado}" />
+						</p:commandButton>
 
-					<p:commandButton icon="ui-icon-pencil"
-						actionListener="#{estadoController.editar}"
-						update=":frmCadastro:pgCadastro" oncomplete="PF('dlEstado').show();">						
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{estadoController.editar}"
+							update=":frmCadastro:pgCadastro"
+							oncomplete="PF('dlEstado').show();">
 
-						<f:attribute name="estadoSelecionado" value="#{estado}" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
+							<f:attribute name="estadoSelecionado" value="#{estado}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
 
-			<p:confirmDialog global="true">
-				<p:commandButton value="Sim" type="button"
-					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 
-				<p:commandButton value="Não" type="button"
-					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
-		</p:panel>
-	</h:form>
-
-	<p:dialog header="Estados - Cadastro" widgetVar="dlEstado"
-		draggable="false" resizable="false" modal="true">
-
-		<h:form id="frmCadastro">
-			<p:panelGrid id="pgCadastro" columns="2">
-				<p:outputLabel value="Nome:" />
-				<p:inputText size="30" maxlength="50"
-					value="#{estadoController.estado.nome}" />
-
-				<p:outputLabel value="Sigla:" />
-				<p:inputText size="2" maxlength="2"
-					value="#{estadoController.estado.sigla}" />
-			</p:panelGrid>
-			<p:panelGrid columns="2">
-				<p:commandButton value="Salvar"
-					actionListener="#{estadoController.salvar}"
-					update=":mensagem :frmCadastro:pgCadastro :frmListagem:tabela" />
-
-				<p:commandButton value="Cancelar"
-					oncomplete="PF('dlEstado').hide();" />
-			</p:panelGrid>
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:panel>
 		</h:form>
-	</p:dialog>
-</body>
-</html>
+
+		<p:dialog header="Estados - Cadastro" widgetVar="dlEstado"
+			draggable="false" resizable="false" modal="true">
+
+			<h:form id="frmCadastro">
+				<p:panelGrid id="pgCadastro" columns="2">
+					<p:outputLabel value="Nome:" />
+					<p:inputText size="30" maxlength="50"
+						value="#{estadoController.estado.nome}" />
+
+					<p:outputLabel value="Sigla:" />
+					<p:inputText size="2" maxlength="2"
+						value="#{estadoController.estado.sigla}" />
+				</p:panelGrid>
+				<p:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+						actionListener="#{estadoController.salvar}"
+						update=":mensagem :frmCadastro:pgCadastro :frmListagem:tabela" />
+
+					<p:commandButton value="Cancelar"
+						oncomplete="PF('dlEstado').hide();" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
