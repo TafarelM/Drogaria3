@@ -6,13 +6,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -21,15 +25,21 @@ import com.tafarelmello.drogaria.dao.FabricanteDAO;
 import com.tafarelmello.drogaria.dao.ProdutoDAO;
 import com.tafarelmello.drogaria.domain.Fabricante;
 import com.tafarelmello.drogaria.domain.Produto;
+import com.tafarelmello.drogaria.util.HibernateUtil;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class ProdutoController implements Serializable {
-	private Produto  produto;
+	private Produto produto;
 	private List<Produto> produtos;
 	private List<Fabricante> fabricantes;
-	
+
 	public Produto getProduto() {
 		return produto;
 	}
@@ -64,7 +74,7 @@ public class ProdutoController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
+
 	public void novo() {
 		try {
 			produto = new Produto();
@@ -76,36 +86,36 @@ public class ProdutoController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
-	public void editar(ActionEvent evento){
+
+	public void editar(ActionEvent evento) {
 		try {
 			produto = (Produto) evento.getComponent().getAttributes().get("produtoSelecionado");
 			produto.setCaminho("C:/Desenvolvimento/img-projeto/" + produto.getCodigo() + ".png");
-			
+
 			FabricanteDAO fabricanteDAO = new FabricanteDAO();
 			fabricantes = fabricanteDAO.listar();
 		} catch (RuntimeException erro) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar selecionar um produto");
 			erro.printStackTrace();
-		}	
+		}
 	}
-	
+
 	public void salvar() {
 		try {
-			
-			if(produto.getCaminho() == null){
+
+			if (produto.getCaminho() == null) {
 				Messages.addGlobalError("O campo foto é obrigatório");
-				
+
 				return;
 			}
-						
+
 			ProdutoDAO produtoDAO = new ProdutoDAO();
 			Produto produtoRetorno = produtoDAO.merge(produto);
-			
+
 			Path origem = Paths.get(produto.getCaminho());
 			Path destino = Paths.get("C:/Desenvolvimento/img-projeto/" + produtoRetorno.getCodigo() + ".png");
 			Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
-			
+
 			produto = new Produto();
 
 			FabricanteDAO fabricanteDAO = new FabricanteDAO();
@@ -126,7 +136,7 @@ public class ProdutoController implements Serializable {
 
 			ProdutoDAO produtoDAO = new ProdutoDAO();
 			produtoDAO.excluir(produto);
-			
+
 			Path arquivo = Paths.get("C:/Desenvolvimento/img-projeto/" + produto.getCodigo() + ".png");
 			Files.deleteIfExists(arquivo);
 
@@ -138,26 +148,34 @@ public class ProdutoController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
-	
-	public void upload(FileUploadEvent evento){
-		
+
+	public void upload(FileUploadEvent evento) {
+
 		try {
 			UploadedFile arquivoUpload = evento.getFile();
 			Path arquivoTemp = Files.createTempFile(null, null);
 			Files.copy(arquivoUpload.getInputstream(), arquivoTemp, StandardCopyOption.REPLACE_EXISTING);
-			
+
 			produto.setCaminho(arquivoTemp.toString());
 		} catch (IOException erro) {
 			Messages.addFlashGlobalError("Ocorreu um erro ao tentar realizar o upload do arquivo");
 			erro.printStackTrace();
 		}
 	}
-	
-	public void imprimir(){
+
+	public void imprimir() {
 		try {
+			String caminho = Faces.getRealPath("/reports/produtos.jasper");
+
+			Map<String, Object> parametros = new HashMap<>();
+
+			Connection conexao = HibernateUtil.getConexao();
+
+			JasperPrint relatorio = JasperFillManager.fillReport(caminho, parametros, conexao);
 			
-		} catch (RuntimeException erro) {
-			Messages.addFlashGlobalError("Ocorreu um erro ao tentar gerar o relatório.");
+			JasperPrintManager.printReport(relatorio, true);
+		} catch (JRException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar gerar o relatório");
 			erro.printStackTrace();
 		}
 	}

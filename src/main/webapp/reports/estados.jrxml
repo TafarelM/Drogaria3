@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-13T01:03:15 -->
+<!-- 2017-03-14T02:00:29 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="estados" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03c7f82b-94ec-46bc-8a9d-9b39a16d9e6f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value="ZHJvZ2FyaWEzLmVzdGFkbyBBUyAsMTA5LDg3LGJlYjZiMTI5LTg4M2UtNGQ2Yi1iNDcyLTAyNTU5&#xA;MTljNzA3Zjs="/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="drogariaDataAdapter"/>
@@ -16,7 +16,7 @@ ORDER BY drogaria3.estado.nome ASC]]>
 		<band height="79" splitType="Stretch">
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="-20" y="0" width="595" height="79" uuid="edef0ddd-6c1f-44e5-87e6-9fdc11f90269"/>
-				<imageExpression><![CDATA["src/main/webapp/resources/images/577977.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["577977.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -27,7 +27,7 @@ ORDER BY drogaria3.estado.nome ASC]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="20"/>
 				</textElement>
-				<text><![CDATA[Relatório de Estados]]></text>
+				<text><![CDATA[Relatorio de Estados]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -78,7 +78,7 @@ ORDER BY drogaria3.estado.nome ASC]]>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Rua: Teste da silva, Centro ,312, CEP: 12369-000, São Paulo -SP]]></text>
+				<text><![CDATA[Rua: Teste da silva, Centro ,312, CEP: 12369-000, S�o Paulo -SP]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
