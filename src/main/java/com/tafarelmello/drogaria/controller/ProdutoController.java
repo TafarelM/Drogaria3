@@ -152,4 +152,13 @@ public class ProdutoController implements Serializable {
 			erro.printStackTrace();
 		}
 	}
+	
+	public void imprimir(){
+		try {
+			
+		} catch (RuntimeException erro) {
+			Messages.addFlashGlobalError("Ocorreu um erro ao tentar gerar o relatório.");
+			erro.printStackTrace();
+		}
+	}
 }

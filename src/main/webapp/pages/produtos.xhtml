@@ -14,14 +14,17 @@
 				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{produtoController.produtos}"
 					var="produto" rows="5">
+
 					<f:facet name="header">
-						<p:commandButton value="Novo"
+						<p:commandButton icon="ui-icon-plus"
 							actionListener="#{produtoController.novo}"
 							oncomplete="PF('dialogo').show();"
 							update=":mensagem :frmCadastro:painel">
 							<f:actionListener
 								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
 						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-print" actionListener="#{produtoController.imprimir}" />
 					</f:facet>
 
 					<p:column headerText="Descrição">
