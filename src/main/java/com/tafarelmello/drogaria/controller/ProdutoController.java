@@ -154,5 +154,8 @@ public class ProdutoController implements Serializable {
 	}
 
 	public void imprimir() {
+
+		Messages.addGlobalInfo("Não implementado ainda ;/");
+
 	}
 }
