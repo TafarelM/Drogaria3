@@ -86,8 +86,10 @@
 						value="#{cidadeController.cidade.estado}"
 						converter="omnifaces.SelectItemsConverter" required="true"
 						requiredMessage="Campo estado é obrigatório.">
+						
 						<f:selectItem noSelectionOption="true"
 							itemLabel="Selecione um Estado" />
+							
 						<f:selectItems value="#{cidadeController.estados}" var="estado"
 							itemValue="#{estado}" itemLabel="#{estado.nome}" />
 					</p:selectOneMenu>

@@ -9,53 +9,107 @@
 
 	<ui:define name="conteudo">
 
-		<h:form>
+		<h:form id="frmListagem">
 			<p:panel header="Funcionario - Listagem">
-				<p:dataTable emptyMessage="Nenhum registro encontrado."
-					paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+					paginator="true" value="#{funcionarioController.funcionarios}"
+					var="funcionario" rows="8">
 
 					<f:facet name="header">
 						<p:commandButton value="Novo"
-							oncomplete="PF('dlFuncionario').show();" />
+							actionListener="#{funcionarioController.novo}"
+							oncomplete="PF('dialogo').show();"
+							update=":mensagem :frmCadastro:painel">
+
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
 					</f:facet>
 
 					<p:column headerText="Carteira de Trabalho">
+						<h:outputText value="#{funcionario.carteiraTrabalho}" />
 					</p:column>
 
 					<p:column headerText="Data de Admissão">
+						<h:outputText value="#{funcionario.dataAdmissao}">
+							<f:convertDateTime locale="pt_BR" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Pessoa">
+						<h:outputText value="#{funcionario.pessoa.nome}" />
 					</p:column>
 
 					<p:column headerText="Opções">
-					</p:column>
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{funcionarioController.excluir}"
+							update=":mensagem :frmListagem:tabela">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir o funcionario?" icon="ui-icon-alert" />
 
+							<f:attribute name="funcionarioSelecionado" value="#{funcionario}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil"
+							actionListener="#{funcionarioController.editar}"
+							update=":mensagem :frmCadastro:painel"
+							oncomplete="PF('dialogo').show();">
+
+							<f:attribute name="funcionarioSelecionado" value="#{funcionario}" />
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
+
+				<p:confirmDialog global="true">
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
 			</p:panel>
 		</h:form>
 
-		<p:dialog header="Funcionarios - Cadastro" widgetVar="dlFuncionario"
+		<p:dialog header="Funcionarios - Cadastro" widgetVar="dialogo"
 			draggable="false" resizable="false" modal="true">
 
-			<h:form>
-				<p:panelGrid columns="2">
-					<p:outputLabel value="Carteira de Trabalho:" />
-					<p:inputText size="20" maxlength="15" />
+			<h:form id="frmCadastro">
+				<p:panelGrid id="painel" columns="2">
+					<p:outputLabel for="cTrabalho" value="Carteira de Trabalho:" />
+					<p:inputText id="cTrabalho"
+						value="#{funcionarioController.funcionario.carteiraTrabalho}"
+						size="20" maxlength="15" />
 
-					<p:outputLabel value="Data de Admissão:" />
-					<p:calendar />
+					<p:outputLabel for="dtAdmissao" value="Data de Admissão:" />
+					<p:calendar id="dtAdmissao"
+						value="#{funcionarioController.funcionario.dataAdmissao}"
+						required="true"
+						requiredMessage="Campo data de cadastro é obrigatório."
+						locale="pt_BR" size="10" />
 
-					<p:outputLabel value="Pessoa:" />
-					<p:selectOneMenu filter="true">
-						<f:selectItem itemLabel="Seleceione uma Pessoa" itemValue="A" />
+					<p:outputLabel for="pessoa" value="Pessoa:" />
+					<p:selectOneMenu id="pessoa" filter="true"
+						value="#{funcionarioController.funcionario.pessoa}"
+						converter="omnifaces.SelectItemsConverter" required="true"
+						converterMessage="O campo é obrigatório.">
+
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Seleceione uma Pessoa" />
+
+						<f:selectItems value="#{funcionarioController.pessoas}"
+							var="pessoa" itemValue="#{pessoa}"
+							itemLabel="#{pessoa.nome} - #{pessoa.cpf}" />
 					</p:selectOneMenu>
 
 				</p:panelGrid>
 				<p:panelGrid columns="2">
-					<p:commandButton value="Salvar" />
+					<p:commandButton value="Salvar"
+						actionListener="#{funcionarioController.salvar}"
+						update=":mensagem :frmListagem:tabela :frmCadastro:painel" />
 					<p:commandButton value="Cancelar"
-						oncomplete="PF('dlFuncionario').hide();" />
+						oncomplete="PF('dialogo').hide();" />
 				</p:panelGrid>
 			</h:form>
 		</p:dialog>

@@ -13,7 +13,7 @@
 			<p:panel header="Clientes - Listagem">
 				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
 					paginator="true" value="#{clienteController.clientes}"
-					var="cliente" rows="5">
+					var="cliente" rows="8">
 					<f:facet name="header">
 						<p:commandButton value="Novo"
 							actionListener="#{clienteController.novo}"
@@ -86,7 +86,7 @@
 						requiredMessage="Campo pessoa é obrigatório.">
 
 						<f:selectItem noSelectionOption="true"
-							itemLabel="Selecione uma pessoa" />
+							itemLabel="Selecione uma Pessoa" />
 
 						<f:selectItems value="#{clienteController.pessoas}" var="pessoa"
 							itemLabel="#{pessoa.nome} - #{pessoa.cpf}" itemValue="#{pessoa}" />
